@@ -17,7 +17,6 @@ pipeline {
         stage('Image Build') {
             steps {
                 script {
-                    // build backend and frontend images
                     dockerUtils.buildImage("backend", "v1")
                     dockerUtils.buildImage("frontend", "v1")
                 }
@@ -27,14 +26,12 @@ pipeline {
         stage('Filesystem Scan') {
             steps {
                 sh 'echo "Running static code analysis..."'
-                // Add tools like SonarQube or Trivy if needed
             }
         }
 
         stage('Image Scan') {
             steps {
                 sh 'echo "Scanning Docker images for vulnerabilities..."'
-                // Example: trivy image talha884/backend:v1
             }
         }
 
@@ -45,6 +42,20 @@ pipeline {
                         dockerUtils.pushImage("backend", "v1")
                         dockerUtils.pushImage("frontend", "v1")
                     }
+                }
+            }
+        }
+
+        stage('Prepare Env Files') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'backend-env', variable: 'BACKEND_ENV'),
+                    string(credentialsId: 'frontend-env', variable: 'FRONTEND_ENV')
+                ]) {
+                    sh '''
+                    echo "$BACKEND_ENV" > backend/.env
+                    echo "$FRONTEND_ENV" > frontend/.env
+                    '''
                 }
             }
         }
@@ -60,11 +71,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
-		dir('chattingo') {
-                	sh '''
-                	docker-compose up 
-                	'''
-		}
+                sh '''
+                docker-compose up -d
+                '''
             }
         }
     }

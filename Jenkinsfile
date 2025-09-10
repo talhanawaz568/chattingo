@@ -62,7 +62,7 @@ pipeline {
             steps {
 		dir('chattingo') {
                 	sh '''
-                	docker-compose up --build 
+                	docker-compose up 
                 	'''
 		}
             }

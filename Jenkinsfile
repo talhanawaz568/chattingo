@@ -60,9 +60,11 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh '''
-                docker-compose up 
-                '''
+		dir('chattingo') {
+                	sh '''
+                	docker-compose up 
+                	'''
+		}
             }
         }
     }

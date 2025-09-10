@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // You’ll add this in Jenkins
+	DOCKERHUB_CREDS_ID = 'dockerhub-creds'
     }
 
     stages {
@@ -41,7 +41,7 @@ pipeline {
         stage('Push to Registry') {
             steps {
                 script {
-                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
+		    docker.withRegistry('', DOCKERHUB_CREDS_ID)
 			dockerUtils.pushImage("backend", "v1")
 			dockerUtils.pushImage("frontend", "v1")
                     }

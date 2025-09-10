@@ -18,8 +18,8 @@ pipeline {
             steps {
                 script {
                     // build backend and frontend images
-                    buildImage("backend", "v1")
-                    buildImage("frontend", "v1")
+		    dockerUtils.buildImage("backend", "v1")
+		    dockerUtils.buildImage("frontend", "v1")
                 }
             }
         }
@@ -42,8 +42,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
-                        pushImage("backend", "v1")
-                        pushImage("frontend", "v1")
+			dockerUtils.pushImage("backend", "v1")
+			dockerUtils.pushImage("frontend", "v1")
                     }
                 }
             }

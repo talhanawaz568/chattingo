@@ -29,12 +29,6 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-#      interval: 30s
-#      timeout: 20s
-#      retries: 10
-#      start_period: 40s
 
   frontend:
     build: ./frontend
@@ -49,12 +43,6 @@ services:
     command: ["npm", "start"]
     volumes:
       - ./frontend:/usr/src/app
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-#      interval: 30s
-#      timeout: 20s
-#      retries: 10
-#      start_period: 40s
 
 volumes:
   mysql_data:

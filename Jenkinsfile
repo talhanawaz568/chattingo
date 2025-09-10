@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-	DOCKERHUB_CREDS_ID = 'dockerhub-creds'
+        DOCKERHUB_CREDS_ID = 'dockerhub-creds'
     }
 
     stages {
@@ -18,8 +18,8 @@ pipeline {
             steps {
                 script {
                     // build backend and frontend images
-		    dockerUtils.buildImage("backend", "v1")
-		    dockerUtils.buildImage("frontend", "v1")
+                    dockerUtils.buildImage("backend", "v1")
+                    dockerUtils.buildImage("frontend", "v1")
                 }
             }
         }
@@ -41,9 +41,9 @@ pipeline {
         stage('Push to Registry') {
             steps {
                 script {
-		    docker.withRegistry('', DOCKERHUB_CREDS_ID)
-			dockerUtils.pushImage("backend", "v1")
-			dockerUtils.pushImage("frontend", "v1")
+                    docker.withRegistry('', DOCKERHUB_CREDS_ID) {
+                        dockerUtils.pushImage("backend", "v1")
+                        dockerUtils.pushImage("frontend", "v1")
                     }
                 }
             }
